@@ -4,6 +4,9 @@ var express = require("express");
 // express 는 함수이므로, 반환값을 변수에 저장한다.
 var app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
     res.send("hello world");
 });
@@ -12,5 +15,3 @@ app.get("/", (req, res) => {
 app.listen(3000, function () {
     console.log("start! express server on port 3000");
 });
-
-// 이제 터미널에 nodemon src/app.js 를 입력해보자.
