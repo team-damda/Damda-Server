@@ -1,4 +1,3 @@
-var path = require("path");
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config")[env];
@@ -22,16 +21,31 @@ const sequelize = new Sequelize(
 );
 /* new Sequelize(database, [username=null], [password=null], [options={}]) */
 
-try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
-} catch (error) {
-    console.error("Unable to connect to the database:", error);
-}
+// try {
+//     await sequelize.authenticate();
+//     console.log("Connection has been established successfully.");
+// } catch (error) {
+//     console.error("Unable to connect to the database:", error);
+// }
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// db.User = require("./user")(sequelize, Sequelize);
+// 모델
+
+db.User = require("./user-model")(sequelize, Sequelize);
+db.UserDeposit = require("./user-deposit-model")(sequelize, Sequelize);
+db.ContainStock = require("./contain-stock-model")(sequelize, Sequelize);
+db.InterestStock = require("./interest-stock-model")(sequelize, Sequelize);
+db.BuyStock = require("./buy-stock-model")(sequelize, Sequelize);
+db.SellStock = require("./sell-stock-model")(sequelize, Sequelize);
+db.StockInfo = require("./stock-info-model")(sequelize, Sequelize);
+db.OneMinChart = require("./one-min-chart-model")(sequelize, Sequelize);
+db.TenMinChart = require("./ten-min-chart-model")(sequelize, Sequelize);
+db.DayChart = require("./day-chart-model")(sequelize, Sequelize);
+db.WeekChart = require("./week-chart-model")(sequelize, Sequelize);
+db.Calendar = require("./calendar-model")(sequelize, Sequelize);
+
+// foreign key 설정 안 해둠.
 
 module.exports = db;
