@@ -12,7 +12,8 @@ const sequelize = new Sequelize(
         host: config.host,
         port: config.port,
         dialect: config.dialect,
-        logging: console.log,
+        // logging: console.log,
+        logging: false,
         ssl: "Amazon RDS",
         language: "en",
         pool: { maxConnections: 5, maxIdleTime: 30 },
@@ -20,13 +21,6 @@ const sequelize = new Sequelize(
     }
 );
 /* new Sequelize(database, [username=null], [password=null], [options={}]) */
-
-// try {
-//     await sequelize.authenticate();
-//     console.log("Connection has been established successfully.");
-// } catch (error) {
-//     console.error("Unable to connect to the database:", error);
-// }
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
