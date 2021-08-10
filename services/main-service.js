@@ -10,9 +10,6 @@ function StatusError(stat, msg) {
 module.exports = {
     readMyStatus: async ({ UserId }) => {
         try {
-            // ! mock model 사용 시(sequlize-mock) where, attributes로 데이터를 전혀 걸러주지 않음.
-            // ! findOne 쓰고 모델에 인스턴스 여러 개 넣으면 배열로 데이터가 들어옴(모델에 인스턴스 한 개만 넣으면 객체로 들어옴)
-
             const answer = {};
             // nickname, history 구하기
             await User.findOne({
@@ -27,14 +24,18 @@ module.exports = {
                         const history_ms = today - userCreatedTime;
                         const history =
                             Math.floor(history_ms / (1000 * 60 * 60 * 24)) + 1;
+
                         answer.nickname = nickname;
                         answer.history = history;
                     } else {
-                        throw StatusError(400, "no user id in users table");
+                        throw StatusError(
+                            statusCode.BAD_REQUEST,
+                            "no user id in users table"
+                        );
                     }
                 },
                 function (error) {
-                    throw error;
+                    throw StatusError(statusCode.DB_ERROR, error.message);
                 }
             );
             // deposit 구하기
@@ -47,11 +48,14 @@ module.exports = {
                         const { deposit } = data;
                         answer.deposit = deposit;
                     } else {
-                        throw new Error("no uid matching in UserDeposit");
+                        throw StatusError(
+                            statusCode.BAD_REQUEST,
+                            "no uid matching in UserDeposit"
+                        );
                     }
                 },
                 function (error) {
-                    throw error;
+                    throw StatusError(statusCode.DB_ERROR, error.message);
                 }
             );
             // containStockAsset 구하기
@@ -61,7 +65,7 @@ module.exports = {
                 attributes: ["stockid", "avgprice", "totcnt"],
             }).then(
                 function (datas) {
-                    if (datas) {
+                    if (datas.length > 0) {
                         const assetlist = datas.map((data) => data.dataValues);
                         answer.containStockAsset = assetlist.reduce(
                             (prev, { totcnt, avgprice }) =>
@@ -69,21 +73,18 @@ module.exports = {
                             0
                         );
                     } else {
-                        throw error(
-                            statusCode.BAD_REQUEST,
-                            "no instance in ContainStock which matches user id"
-                        );
+                        answer.containStockAsset = 0;
                     }
                 },
                 function (error) {
-                    throw error;
+                    throw StatusError(statusCode.DB_ERROR, error.message);
                 }
             );
 
             return answer;
         } catch (error) {
             console.error(error);
-            throw error;
+            throw StatusError(statusCode.DB_ERROR, error.message);
         }
     },
 };

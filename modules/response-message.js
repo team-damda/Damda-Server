@@ -21,4 +21,8 @@ module.exports = {
     NO_ACCOUNT: "존재하지 않는 계정입니다.",
     MISMATCH_PWD: "비밀번호가 일치하지 않습니다.",
     SIGNIN_FAIL: "로그인 실패",
+
+    // 메인 상태 조회
+    MAIN_STATUS_READ_SUCCESS: "메인 상태 조회 성공",
+    MAIN_STATUS_READ_FAIL: "메인 상태 조회 실패",
 };
