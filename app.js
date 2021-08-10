@@ -5,7 +5,8 @@ var express = require("express");
 var app = express();
 
 // db 연결
-const { sequelize, User } = require("./models");
+const { sequelize } = require("./models");
+const router = require("./routes/index");
 
 sequelize
     .sync()
@@ -19,21 +20,14 @@ sequelize
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-    res.send("hello world");
-});
+// app.get("/", (req, res) => {
+//     res.send("hello world");
+// });
 
 // 테스트
-/*
-app.post("/temp", (req, res) => {
-    const test1 = User.create({
-        email: "test2@gmail.com",
-        password: "1111",
-        nickname: "테스트2",
-    });
-    res.send("success");
-});
-*/
+
+app.use("/", router);
+
 // 3000 포트로 서버 오픈
 app.listen(3000, function () {
     console.log("start! express server on port 3000");
