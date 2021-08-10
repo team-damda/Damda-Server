@@ -29,6 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", indexRouter);
 
 // 8000 포트로 서버 오픈
-app.listen(8000, function () {
-    console.log("start! express server on port 8000");
+app.listen(3000, function () {
+    console.log("start! express server on port 3000");
 });
+
+module.exports = app;
