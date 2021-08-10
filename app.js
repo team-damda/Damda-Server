@@ -6,7 +6,7 @@ var app = express();
 
 // db 연결
 const { sequelize } = require("./models");
-const router = require("./routes/index");
+const indexRouter = require("./routes/index");
 
 sequelize
     .sync()
@@ -26,9 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // 테스트
 
-app.use("/", router);
+app.use("/", indexRouter);
 
-// 3000 포트로 서버 오픈
-app.listen(3000, function () {
-    console.log("start! express server on port 3000");
+// 8000 포트로 서버 오픈
+app.listen(8000, function () {
+    console.log("start! express server on port 8000");
 });
