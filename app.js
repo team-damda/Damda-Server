@@ -20,17 +20,6 @@ sequelize
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.get("/", (req, res) => {
-//     res.send("hello world");
-// });
-
-// 테스트
-
 app.use("/", indexRouter);
-
-// 8000 포트로 서버 오픈
-app.listen(3000, function () {
-    console.log("start! express server on port 3000");
-});
 
 module.exports = app;

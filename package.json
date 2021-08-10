@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "app.js",
+        "start": "server.js",
         "test": "jest --watchAll"
     },
     "dependencies": {
