@@ -3,6 +3,8 @@ var express = require("express");
 
 // express 는 함수이므로, 반환값을 변수에 저장한다.
 var app = express();
+var http = require("http").createServer(app);
+var io = require("socket.io")(http);
 
 // db 연결
 const { sequelize, User } = require("./models");
@@ -34,7 +36,35 @@ app.post("/temp", (req, res) => {
     res.send("success");
 });
 */
+// 소켓
+
+io.sockets.on("connection", (socket) => {
+    console.log(`Socket connected : ${socket.id}`);
+    socket.on("message", (obj) => {
+        // 클라이언트에서 message라는 이름의 이벤트를 받았을 경우 호출
+        console.log("server received data");
+        console.log(obj);
+    });
+    socket.on("disconnect", () => {
+        // 클라이언트의 연결이 끊어졌을 때 호출
+        console.log(`Socket disconnected : ${socket.id}`);
+    });
+});
+
+// io.on("connection", function (socket) {
+//     console.log("client connected");
+//     socket.on("message", function (obj) {
+//         // 클라이언트에서 message라는 이름의 이벤트를 받았을 경우 호출
+//         console.log("server received data");
+//         console.log(obj);
+//     });
+//     socket.on("disconnect", function () {
+//         // 클라이언트의 연결이 끊어졌을 때 호출
+//         console.log("server disconnected");
+//     });
+// });
+
 // 3000 포트로 서버 오픈
-app.listen(3000, function () {
+http.listen(3000, function () {
     console.log("start! express server on port 3000");
 });
