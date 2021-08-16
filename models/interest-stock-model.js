@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            stockid: {
+            stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },

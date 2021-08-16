@@ -6,15 +6,15 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            stockid: {
+            stockId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            totcnt: {
+            totCnt: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            avgprice: {
+            avgPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },

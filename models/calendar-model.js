@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            totasset: {
+            totAsset: {
                 // 총 자산
                 type: DataTypes.INTEGER,
                 allowNull: false,

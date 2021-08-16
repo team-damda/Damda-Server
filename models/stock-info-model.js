@@ -2,15 +2,15 @@ module.exports = (sequelize, DataTypes) => {
     return sequelize.define(
         "StockInfo",
         {
-            markettype: {
+            marketType: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            stockid: {
+            stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            stockname: {
+            stockName: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
