@@ -29,7 +29,9 @@ module.exports = (sequelize, DataTypes) => {
             },
             transactionAmount: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+            },
+            tradingValue: {
+                type: DataTypes.INTEGER,
             },
         },
         {
