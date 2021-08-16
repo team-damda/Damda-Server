@@ -4,11 +4,6 @@ const server = http.createServer(app);
 const socketIo = require("socket.io");
 const io = socketIo(server);
 
-// 3000 포트로 서버 오픈
-app.listen(3000, function () {
-    console.log("start! express server on port 3000");
-});
-
 // 소켓 일단 간단하게
 io.on("connection", (socket) => {
     console.log(`Socket connected ${socket.id}`);
