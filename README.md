@@ -6,6 +6,8 @@
 
 ```json
 nodemon app.js
+# 또는
+npm start
 ```
 
 ## 🙏 **버전 관련 정보**
