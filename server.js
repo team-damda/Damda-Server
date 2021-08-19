@@ -14,6 +14,10 @@ io.on("connection", (socket) => {
     socket.on("message", (obj) => {
         // 클라이언트에서 message라는 이름의 이벤트를 받았을 경우 호출
         console.log("server received data");
+        socket.emit("reply", "this is from server");
+        // string 형식으로 응답 주기
+        socket.emit("reply_json", { hi: "from server" });
+        // json 형식으로 응답 주기
         console.log(obj);
     });
     socket.on("disconnect", () => {
