@@ -23,7 +23,7 @@ module.exports = {
                         responseBody.successData(
                             statusCode.OK,
                             data,
-                            successMeta["SUC-MAIN-0001"]
+                            successMeta["SUC-MAIN-0001"].message
                         )
                     );
                 })
