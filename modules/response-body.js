@@ -1,5 +1,5 @@
 module.exports = {
-    successData: (data) => {
+    successData: (status, data, message) => {
         return {
             status: status,
             success: true,

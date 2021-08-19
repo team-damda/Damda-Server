@@ -8,7 +8,7 @@ module.exports = {
         return err;
     },
     StatusError: (stat, msg) => {
-        var err = new Error(msg);
+        var err = new Error(msg || "");
         err.statusCode = stat;
         return err;
     },

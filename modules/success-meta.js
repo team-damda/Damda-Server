@@ -7,5 +7,7 @@ module.exports = {
         * message 형식
             "main/route success"
     */
-    "SUC-MAIN-0001": {},
+    "SUC-MAIN-0001": {
+        message: "메인 상태 조회 성공",
+    },
 };
