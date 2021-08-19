@@ -19,10 +19,10 @@ describe("GET /main/status", function () {
                 expect(res.body).toStrictEqual({
                     status: 200,
                     success: true,
-                    message: successMeta["SUC-MAIN-0001"],
+                    message: successMeta["SUC-MAIN-0001"].message,
                     data: {
                         nickname: "테스트",
-                        history: 17,
+                        history: 18,
                         deposit: 1000000,
                         containStockAsset: 8000,
                     },
@@ -40,10 +40,10 @@ describe("GET /main/status", function () {
                 expect(res.body).toStrictEqual({
                     status: 200,
                     success: true,
-                    message: successMeta["SUC-MAIN-0001"],
+                    message: successMeta["SUC-MAIN-0001"].message,
                     data: {
                         nickname: "테스트2",
-                        history: 17,
+                        history: 18,
                         deposit: 1200000,
                         containStockAsset: 0,
                     },
