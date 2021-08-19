@@ -1,7 +1,7 @@
 const { UserDeposit, ContainStock, StockInfo, User } = require("../../models");
 const statusCode = require("../../modules/status-code");
 const errorMeta = require("../../modules/error-meta");
-const { CustomError, StatusError } = require("../../modules/custom-error");
+const CustomError = require("../../modules/custom-error");
 
 module.exports = async ({ UserId }) => {
     try {
@@ -25,13 +25,17 @@ module.exports = async ({ UserId }) => {
                 } else {
                     throw CustomError(
                         statusCode.BAD_REQUEST,
-                        "ERR-MAIN-0001",
+                        "ERR-MAIN-0001-1",
                         errorMeta
                     );
                 }
             },
             function (error) {
-                throw StatusError(statusCode.DB_ERROR, error.message);
+                throw CustomError(
+                    statusCode.DB_ERROR,
+                    "ERR-MAIN-0001-2",
+                    error.message || ""
+                );
             }
         );
         // deposit 구하기
@@ -46,27 +50,31 @@ module.exports = async ({ UserId }) => {
                 } else {
                     throw CustomError(
                         statusCode.BAD_REQUEST,
-                        "ERR-MAIN-0002",
+                        "ERR-MAIN-0002-1",
                         errorMeta
                     );
                 }
             },
             function (error) {
-                throw StatusError(statusCode.DB_ERROR, error.message);
+                throw CustomError(
+                    statusCode.DB_ERROR,
+                    "ERR-DB-0002-2",
+                    error.message || ""
+                );
             }
         );
         // containStockAsset 구하기
         // TODO 실시간으로 OneMinCharts와 조인 후 데이터 받아서 계산해야 함.
         await ContainStock.findAll({
             where: { uid: UserId },
-            attributes: ["stockid", "avgprice", "totcnt"],
+            attributes: ["stockId", "avgPrice", "totCnt"],
         }).then(
             function (datas) {
                 if (datas.length > 0) {
                     const assetlist = datas.map((data) => data.dataValues);
                     answer.containStockAsset = assetlist.reduce(
-                        (prev, { totcnt, avgprice }) =>
-                            prev + totcnt * avgprice,
+                        (prev, { totCnt, avgPrice }) =>
+                            prev + totCnt * avgPrice,
                         0
                     );
                 } else {
@@ -74,13 +82,17 @@ module.exports = async ({ UserId }) => {
                 }
             },
             function (error) {
-                throw StatusError(statusCode.DB_ERROR, error.message);
+                throw CustomError(
+                    statusCode.DB_ERROR,
+                    "ERR-DB-0003-1",
+                    error.message || ""
+                );
             }
         );
 
         return answer;
     } catch (error) {
         console.error(error);
-        throw StatusError(statusCode.DB_ERROR, error.message);
+        throw error;
     }
 };

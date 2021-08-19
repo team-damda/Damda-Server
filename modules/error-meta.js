@@ -6,12 +6,25 @@ module.exports = {
             ERR-{route}-{순번}
         
         * detail 형식
-            "{data name}, {data name} not in {db table name}"
+            "{}-{} connection instable while searching {db table name} table"
+            "no {data name}, {data name} matching in {db table name} table"
     */
-    "ERR-MAIN-0001": {
+
+    "ERR-MAIN-0001-1": {
         message: "no user id matching in Users table",
     },
-    "ERR-MAIN-0002": {
-        message: "no user id matching in UserDeposit table",
+    "ERR-MAIN-0001-2": {
+        message: "server - db connection instable while searching Users table",
+    },
+    "ERR-MAIN-0002-1": {
+        message: "no user id matching in UserDeposits table",
+    },
+    "ERR-MAIN-0002-2": {
+        message:
+            "server - db connection instable while searching UserDeposits table",
+    },
+    "ERR-MAIN-0004": {
+        message:
+            "server - db connection instable while searching ContainStocks table",
     },
 };

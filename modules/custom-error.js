@@ -1,15 +1,14 @@
-module.exports = {
-    CustomError: (stat, errcode, errorMeta) => {
-        var err = new Error(msg);
-        err.statusCode = stat;
-        err.errorcode = errcode;
-        err.message = errorMeta[errcode].message;
-
-        return err;
-    },
-    StatusError: (stat, msg) => {
-        var err = new Error(msg || "");
-        err.statusCode = stat;
-        return err;
-    },
+module.exports = (stat, errCode, errorMeta) => {
+    /*
+        CustomError: {
+            errorCode,
+            statusCode,
+            message
+        }
+    */
+    var err = new Error(errorMeta[errCode].message);
+    err.statusCode = stat;
+    err.errorCode = errCode;
+    // console.log(err.errorcode);
+    return err;
 };

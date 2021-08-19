@@ -27,14 +27,18 @@ module.exports = {
                         )
                     );
                 })
-                .catch((err) => {
-                    throw err;
+                .catch((error) => {
+                    throw error;
                 });
         } catch (error) {
-            let { status, errorcode, message } = error;
-            status = status || statusCode.BAD_REQUEST;
-            res.status(status).send(
-                responseBody.fail(status, errorcode || "", message || "")
+            let { statusCode, errorCode, message } = error;
+            statusCode = statusCode || statusCode.INTERNAL_SERVER_ERROR;
+            res.status(statusCode).send(
+                responseBody.fail(
+                    statusCode,
+                    errorCode || "NOT DEFINED",
+                    message || ""
+                )
             );
         }
     },

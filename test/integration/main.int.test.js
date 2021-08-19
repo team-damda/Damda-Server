@@ -5,7 +5,7 @@ const successMeta = require("../../modules/success-meta");
 const errorMeta = require("../../modules/error-meta");
 
 beforeAll(async () => {
-    await sequelize.sync({});
+    await sequelize.sync();
 });
 
 describe("GET /main/status", function () {
@@ -36,7 +36,7 @@ describe("GET /main/status", function () {
             .query({ UserId: 2 })
             .set("Accept", "application/json")
             .expect((res) => {
-                console.log(res.body);
+                // console.log(res.body);
                 expect(res.body).toStrictEqual({
                     status: 200,
                     success: true,
@@ -50,5 +50,21 @@ describe("GET /main/status", function () {
                 });
             })
             .expect(200, done);
+    });
+    it("user id 존재하지만 Deposits에 데이터가 존재하지 않는 경우", function (done) {
+        request(app)
+            .get("/main/status")
+            .query({ UserId: 3 })
+            .set("Accept", "application/json")
+            .expect((res) => {
+                // console.log(res.body);
+                expect(res.body).toStrictEqual({
+                    status: 400,
+                    success: false,
+                    errorcode: "ERR-MAIN-0002-1",
+                    message: errorMeta["ERR-MAIN-0002-1"].message,
+                });
+            })
+            .expect(400, done);
     });
 });
