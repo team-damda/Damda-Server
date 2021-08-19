@@ -14,13 +14,12 @@ module.exports = {
             message: message,
         };
     },
-    fail: (status, errorcode, message, detail) => {
+    fail: (status, errorcode, message) => {
         return {
             status: status,
             success: false,
             errorcode: errorcode,
             message: message,
-            detail: detail,
         };
     },
 };

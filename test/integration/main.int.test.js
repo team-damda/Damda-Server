@@ -30,7 +30,7 @@ describe("GET /main/status", function () {
                 // console.log(res.body);
                 expect(res.body).toStrictEqual({
                     nickname: "테스트",
-                    history: 9,
+                    history: 17,
                     deposit: 1000000,
                     containStockAsset: 8000,
                 });
@@ -46,7 +46,7 @@ describe("GET /main/status", function () {
                 console.log(res.body);
                 expect(res.body).toStrictEqual({
                     nickname: "테스트2",
-                    history: 9,
+                    history: 17,
                     deposit: 1200000,
                     containStockAsset: 0,
                 });
