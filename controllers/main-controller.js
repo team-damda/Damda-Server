@@ -1,5 +1,5 @@
 const statusCode = require("../modules/status-code");
-const mainService = require("../services/main-service");
+const MainServices = require("../services/main-services");
 const responseMessage = require("../modules/response-message");
 const responseBody = require("../modules/response-body");
 
@@ -14,10 +14,9 @@ module.exports = {
                 return;
             }
             const { UserId } = req.query;
-            await mainService
-                .readMyStatus({
-                    UserId: parseInt(UserId),
-                })
+            await MainServices.readMyStatus({
+                UserId: parseInt(UserId),
+            })
                 .then((data) => {
                     res.status(statusCode.OK).send(data);
                 })
@@ -25,9 +24,11 @@ module.exports = {
                     throw err;
                 });
         } catch (error) {
-            res.status(error.status || statusCode.BAD_REQUEST).send({
-                message: error.message || responseMessage.MAIN_STATUS_READ_FAIL,
-            });
+            let { status, errorcode, message } = error;
+            status = status || statusCode.BAD_REQUEST;
+            res.status(status).send(
+                responseBody.fail(status, errorcode || "", message || "")
+            );
         }
     },
 };
