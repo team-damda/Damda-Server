@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            stockid: {
+            stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            totprice: {
+            totPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            valuationloss: {
+            valuationLoss: {
                 // 평가 손익
                 type: DataTypes.INTEGER,
                 allowNull: false,

@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     return sequelize.define(
         "DayChart",
         {
-            stockid: {
+            stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            currentprice: {
+            currentPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -15,19 +15,19 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            startprice: {
+            startPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            maxprice: {
+            maxPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            minprice: {
+            minPrice: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            transactionamount: {
+            transactionAmount: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
