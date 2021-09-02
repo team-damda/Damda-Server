@@ -46,5 +46,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(allowCrossDomain);
 
 app.use("/", indexRouter);
+app.get("/hey", (req, res) => {
+    if (req.query.call === "request") {
+        console.log("query.call === request");
+    }
+    console.log("/hey rest api 요청 성공");
+    res.status(200).send({ data: { a: "b" } });
+});
 
 module.exports = app;

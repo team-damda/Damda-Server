@@ -32,10 +32,9 @@ module.exports = {
                 });
         } catch (error) {
             let { statusCode, errorCode, message } = error;
-            statusCode = statusCode || statusCode.INTERNAL_SERVER_ERROR;
             res.status(statusCode).send(
                 responseBody.fail(
-                    statusCode,
+                    statusCode || statusCode.INTERNAL_SERVER_ERROR,
                     errorCode || "NOT DEFINED",
                     message || ""
                 )

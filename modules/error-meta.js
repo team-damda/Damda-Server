@@ -27,4 +27,11 @@ module.exports = {
         message:
             "server - db connection instable while searching ContainStocks table",
     },
+
+    "ERR-SOCK-0001": {
+        message: "wrong query",
+    },
+    "ERR-SOCK-0002": {
+        message: "wrong code: you put undefined object to sendByPeriod method",
+    },
 };
