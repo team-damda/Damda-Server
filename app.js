@@ -41,6 +41,41 @@ var allowCrossDomain = function (req, res, next) {
     next();
 };
 
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const glob = require("glob");
+
+const getApis = () => {
+    return glob.sync("./**/**.js");
+};
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "담다 Api 문서",
+            version: "1.0.0",
+            description: "담다 Api 문서화한 내용",
+            license: {
+                name: "MIT",
+                url: "https://choosealicense.com/licenses/mit/",
+            },
+            contact: {
+                name: "Swagger",
+                url: "https://swagger.io",
+                email: "Info@SmartBear.com",
+            },
+        },
+        servers: [
+            {
+                url: "http://localhost:3000/",
+                description: "전체 api들",
+            },
+        ],
+    },
+    apis: getApis(),
+};
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(allowCrossDomain);
@@ -53,5 +88,35 @@ app.get("/hey", (req, res) => {
     console.log("/hey rest api 요청 성공");
     res.status(200).send({ data: { a: "b" } });
 });
+
+// swagger api 문서 관련 코드
+app.set("view engine", "ejs");
+app.get("/users", (req, res, next) => {
+    /**
+     * @swagger
+     *  /users:
+     *    get:
+     *      produces:
+     *        - application/json
+     *      parameters:
+     *        - in: path
+     *          name: userId
+     *          required: true
+     *          description: Id of the user
+     
+     */
+    const userOne = new User("Alexander", "fake@gmail.com");
+    const userTwo = new User("Ryan", "fakeagain@gmail.com");
+    res.json({ userOne, userTwo });
+});
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use("/docs", swaggerUi.serve);
+app.get(
+    "/docs",
+    swaggerUi.setup(specs, {
+        explorer: true,
+    })
+);
 
 module.exports = app;
