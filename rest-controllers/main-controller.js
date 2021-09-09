@@ -6,9 +6,9 @@ const successMeta = require("../modules/success-meta");
 
 module.exports = {
     readMyStatus: async (req, res) => {
-        // TODO UserId -> 토큰으로 헤더에서 받고 이건 미들웨어로 처리해야 함.
         try {
             if (!req.query.UserId) {
+                // TODO UserId -> 토큰으로 헤더에서 받고 이건 미들웨어로 처리해야 함.
                 res.status(statusCode.BAD_REQUEST).send({
                     message: responseMessage.MAIN_STATUS_READ_FAIL,
                 });
@@ -31,10 +31,10 @@ module.exports = {
                     throw error;
                 });
         } catch (error) {
-            let { statusCode, errorCode, message } = error;
-            res.status(statusCode).send(
+            let { statuscode, errorCode, message } = error;
+            res.status(statuscode).send(
                 responseBody.fail(
-                    statusCode || statusCode.INTERNAL_SERVER_ERROR,
+                    statuscode || statusCode.INTERNAL_SERVER_ERROR,
                     errorCode || "NOT DEFINED",
                     message || ""
                 )
