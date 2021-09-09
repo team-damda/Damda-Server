@@ -1,6 +1,6 @@
 // TODO 에러 코드 형식 관련 토의 필요
 module.exports = {
-    // errorcode: {message, detail}
+    // errorcode: {message}
     /*
         * errorcode 형식
             ERR-{route}-{순번}
