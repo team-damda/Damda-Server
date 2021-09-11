@@ -43,6 +43,7 @@ var allowCrossDomain = function (req, res, next) {
 };
 app.set("view engine", "ejs"); //'ejs'탬플릿을 엔진으로 한다.
 app.set("views", path.join(__dirname, "views")); //폴더, 폴더경로 지정
+app.use(express.static(path.join(__dirname + "../public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
