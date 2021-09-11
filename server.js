@@ -16,6 +16,6 @@ io.of("/main/status")
     });
 
 // 3000 포트로 서버 오픈
-server.listen(3000, function () {
+server.listen(5000, function () {
     console.log("start! express server on port 3000");
 });
