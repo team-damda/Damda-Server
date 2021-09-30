@@ -28,9 +28,9 @@ module.exports = {
             let i = 0;
             while (socket.connected) {
                 await sleep(1000 * period); // 10초 기다림
-                console.log(i, "from server main/status");
 
                 if (socket.connected) {
+                    console.log(socket.id, "from server main/status");
                     await service(query)
                         .then((data) => {
                             successDataFormat.data = data;

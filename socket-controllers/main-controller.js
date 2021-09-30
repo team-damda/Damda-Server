@@ -1,4 +1,4 @@
-const statusCode = require("../modules/status-code");
+const statusCodeMeta = require("../modules/status-code-meta");
 const MainServices = require("../services/main-services");
 const responseBody = require("../modules/response-body");
 const successMeta = require("../modules/success-meta");
@@ -21,7 +21,7 @@ module.exports = {
                 service: MainServices.readMyStatus,
                 successDataFormat: responseBody.successData(
                     // nested까지 확인은 못함: 클라이언트에서
-                    statusCode.OK,
+                    statusCodeMeta.OK,
                     successMeta["SUC-MAIN-0001"].message
                 ),
                 period: 10,
@@ -31,12 +31,12 @@ module.exports = {
                 console.log(`Socket disconnected /main/status: ${socket.id}`);
             });
         } catch (error) {
-            let { status, errorCode, message } = error;
+            let { statusCode, errorCode, message } = error;
             if (socket.connected) {
                 sendError(
                     socket,
                     responseBody.fail(
-                        status || statusCode.BAD_REQUEST,
+                        statusCode || statusCodeMeta.BAD_REQUEST,
                         errorCode || errorMeta["ERR-SOCK-0002"],
                         message || ""
                     )

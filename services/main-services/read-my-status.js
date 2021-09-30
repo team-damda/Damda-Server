@@ -1,5 +1,5 @@
 const { UserDeposit, ContainStock, StockInfo, User } = require("../../models");
-const statusCode = require("../../modules/status-code");
+const statusCodeMeta = require("../../modules/status-code-meta");
 const errorMeta = require("../../modules/error-meta");
 const CustomError = require("../../modules/custom-error");
 
@@ -24,7 +24,7 @@ module.exports = async ({ UserId }) => {
                     answer.history = history;
                 } else {
                     throw CustomError(
-                        statusCode.BAD_REQUEST,
+                        statusCodeMeta.BAD_REQUEST,
                         "ERR-MAIN-0001-1",
                         errorMeta
                     );
@@ -32,7 +32,7 @@ module.exports = async ({ UserId }) => {
             },
             function (error) {
                 throw CustomError(
-                    statusCode.DB_ERROR,
+                    statusCodeMeta.DB_ERROR,
                     "ERR-MAIN-0001-2",
                     error.message || ""
                 );
@@ -49,7 +49,7 @@ module.exports = async ({ UserId }) => {
                     answer.deposit = deposit;
                 } else {
                     throw CustomError(
-                        statusCode.BAD_REQUEST,
+                        statusCodeMeta.BAD_REQUEST,
                         "ERR-MAIN-0002-1",
                         errorMeta
                     );
@@ -57,7 +57,7 @@ module.exports = async ({ UserId }) => {
             },
             function (error) {
                 throw CustomError(
-                    statusCode.DB_ERROR,
+                    statusCodeMeta.DB_ERROR,
                     "ERR-DB-0002-2",
                     error.message || ""
                 );
@@ -83,7 +83,7 @@ module.exports = async ({ UserId }) => {
             },
             function (error) {
                 throw CustomError(
-                    statusCode.DB_ERROR,
+                    statusCodeMeta.DB_ERROR,
                     "ERR-DB-0003-1",
                     error.message || ""
                 );
