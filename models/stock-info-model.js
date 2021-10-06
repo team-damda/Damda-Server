@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                primaryKey: true,
             },
             stockName: {
                 type: DataTypes.STRING,

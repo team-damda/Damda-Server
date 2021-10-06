@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                primaryKey: true,
             },
             currentPrice: {
                 type: DataTypes.INTEGER,
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             time: {
                 type: DataTypes.DATE,
                 allowNull: false,
+                primaryKey: true,
             },
             startPrice: {
                 type: DataTypes.INTEGER,
