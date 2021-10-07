@@ -13,4 +13,7 @@ module.exports = {
     "SUC-MAIN-0002": {
         message: "main/interestStocks 조회 성공",
     },
+    "SUC-COMMON-0003": {
+        message: "common/holdingStocks 조회 성공",
+    },
 };

@@ -44,4 +44,43 @@ module.exports = {
             }
         }
     },
+    readInterestStocks: (socket) => {
+        // TODO service 레이어 다 만들어지면 -> sendByPeriod로 리팩토링하기
+        try {
+            console.log(
+                `Socket connected in /main/interestStocks ${socket.id}`
+            );
+            const UserId = socket.handshake.query.token;
+            console.log("여기는 가?");
+            sendByPeriodWithNoService({
+                socket,
+                period: 10,
+                data: [
+                    {
+                        marketType: "KOSPI",
+                        stockId: "1SNDNDJJFHUSISN",
+                        stockName: "삼성증권",
+                        currentPrice: 50000,
+                        todayChange: 2000,
+                        // 시가대비
+                        todayRoC: (2000 / (50000 - 2000)) * 100,
+                        // Today Rate of Change: 등락률
+                    },
+                ],
+            });
+            console.log("여기는 와?");
+        } catch (error) {
+            let { statusCode, errorCode, message } = error;
+            if (socket.connected) {
+                sendError(
+                    socket,
+                    responseBody.fail(
+                        statusCode || statusCodeMeta.BAD_REQUEST,
+                        errorCode || errorMeta["ERR-SOCK-0002"],
+                        message || ""
+                    )
+                );
+            }
+        }
+    },
 };
