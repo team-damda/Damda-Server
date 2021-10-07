@@ -3,7 +3,12 @@ const MainServices = require("../services/main-services");
 const responseBody = require("../modules/response-body");
 const successMeta = require("../modules/success-meta");
 
-const { sendByPeriod, sendError, sleep } = require("../modules/socket-modules");
+const {
+    sendByPeriod,
+    sendError,
+    sleep,
+    sendByPeriodWithNoService,
+} = require("../modules/socket-modules");
 const errorMeta = require("../modules/error-meta");
 
 module.exports = {
@@ -51,11 +56,9 @@ module.exports = {
                 `Socket connected in /main/interestStocks ${socket.id}`
             );
             const UserId = socket.handshake.query.token;
-            console.log("여기는 가?");
-            sendByPeriodWithNoService({
-                socket,
-                period: 10,
-                data: [
+            const successData = responseBody.successData(
+                statusCodeMeta.OK,
+                [
                     {
                         marketType: "KOSPI",
                         stockId: "1SNDNDJJFHUSISN",
@@ -67,8 +70,13 @@ module.exports = {
                         // Today Rate of Change: 등락률
                     },
                 ],
+                successMeta["SUC-MAIN-0002"].message
+            );
+            sendByPeriodWithNoService({
+                socket,
+                period: 10,
+                data: successData,
             });
-            console.log("여기는 와?");
         } catch (error) {
             let { statusCode, errorCode, message } = error;
             if (socket.connected) {

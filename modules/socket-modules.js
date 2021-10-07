@@ -6,22 +6,13 @@ module.exports = {
     },
     sendByPeriodWithNoService: async ({ socket, period, data }) => {
         /* 개발용 더미 데이터 보내기 위함*/
-        console.log("sendByPeriodWithNoService", socket, period, data);
         if (socket && period && data) {
-            console.log("여기는 오긴 하니");
-            const sleep = (ms) => {
-                return new Promise((resolve) => {
-                    setTimeout(resolve, ms);
-                });
-            };
-            while (socket.connected) {
-                await sleep(1000 * period); // 10초 기다림
-
+            setInterval(() => {
                 if (socket.connected) {
                     console.log(socket.id, "from server main/interestSockets");
                     socket.emit("reply_json", data);
                 }
-            }
+            }, 10 * 1000);
         } else {
             throw CustomError(
                 statusCode.BAD_REQUEST,
@@ -45,17 +36,12 @@ module.exports = {
             successDataFormat: 소켓으로 보낼 데이터
         */
         if (socket && service && successDataFormat && query && period) {
-            const sleep = (ms) => {
-                return new Promise((resolve) => {
-                    setTimeout(resolve, ms);
-                });
-            };
-
             let i = 0;
-            while (socket.connected) {
-                await sleep(1000 * period); // 10초 기다림
+            console.log("여기는 오니?");
 
+            setInterval(async () => {
                 if (socket.connected) {
+                    console.log("여기는 오니?");
                     console.log(socket.id, "from server main/status");
                     await service(query)
                         .then((data) => {
@@ -66,7 +52,7 @@ module.exports = {
                             throw error;
                         });
                 }
-            }
+            }, 10 * 1000);
         } else {
             throw CustomError(
                 statusCode.BAD_REQUEST,
