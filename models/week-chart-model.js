@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             stockId: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                primaryKey: true,
             },
             currentPrice: {
                 type: DataTypes.INTEGER,
@@ -14,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
                 // 일자
                 type: DataTypes.DATEONLY,
                 allowNull: false,
+                primaryKey: true,
             },
             startPrice: {
                 type: DataTypes.INTEGER,
@@ -28,9 +30,6 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             transactionAmount: {
-                type: DataTypes.INTEGER,
-            },
-            tradingValue: {
                 type: DataTypes.INTEGER,
             },
         },

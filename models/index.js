@@ -35,7 +35,6 @@ db.BuyStock = require("./buy-stock-model")(sequelize, Sequelize);
 db.SellStock = require("./sell-stock-model")(sequelize, Sequelize);
 db.StockInfo = require("./stock-info-model")(sequelize, Sequelize);
 db.OneMinChart = require("./one-min-chart-model")(sequelize, Sequelize);
-db.TenMinChart = require("./ten-min-chart-model")(sequelize, Sequelize);
 db.DayChart = require("./day-chart-model")(sequelize, Sequelize);
 db.WeekChart = require("./week-chart-model")(sequelize, Sequelize);
 db.Calendar = require("./calendar-model")(sequelize, Sequelize);
