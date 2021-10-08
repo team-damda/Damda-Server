@@ -6,7 +6,6 @@ const successMeta = require("../modules/success-meta");
 const {
     sendByPeriod,
     sendError,
-    sleep,
     sendByPeriodWithNoService,
 } = require("../modules/socket-modules");
 const errorMeta = require("../modules/error-meta");
@@ -76,6 +75,10 @@ module.exports = {
                 socket,
                 period: 10,
                 data: successData,
+            });
+            socket.on("disconnect", () => {
+                // 클라이언트의 연결이 끊어졌을 때 호출
+                console.log(`Socket disconnected /main/status: ${socket.id}`);
             });
         } catch (error) {
             let { statusCode, errorCode, message } = error;

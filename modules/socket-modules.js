@@ -29,19 +29,21 @@ module.exports = {
         successDataFormat,
     }) => {
         /*
+            [설명]
+            period초마다 서비스 레이어 객체를 통해 디비에 있는 데이터 가져와서 현재 연결된 소켓 전송해 줌
+			
+            [인자]
             socket: 현재 연결된 소켓
             period: 소켓으로 데이터 보낼 때의 주기(단위: 초)
             service: 해당하는 서비스 레이어 객체
-            query: 서비스 레이어에 인자로 보낼 쿼리
-            successDataFormat: 소켓으로 보낼 데이터
+            query: 서비스 레이어에 인자로 보낼 쿼리(타입: 객체)
+            successDataFormat: 소켓으로 보낼 데이터 형식
         */
         if (socket && service && successDataFormat && query && period) {
             let i = 0;
-            console.log("여기는 오니?");
 
             setInterval(async () => {
                 if (socket.connected) {
-                    console.log("여기는 오니?");
                     console.log(socket.id, "from server main/status");
                     await service(query)
                         .then((data) => {
