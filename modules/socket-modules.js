@@ -44,7 +44,7 @@ module.exports = {
 
             setInterval(async () => {
                 if (socket.connected) {
-                    console.log(socket.id, "from server main/status");
+                    console.log(socket.id, "from server common/status");
                     await service(query)
                         .then((data) => {
                             successDataFormat.data = data;

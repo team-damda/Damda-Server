@@ -8,10 +8,10 @@ beforeAll(async () => {
     await sequelize.sync();
 });
 
-describe("GET /main/status", function () {
+describe("GET /common/status", function () {
     it("user id Users에 존재하는 정상적인 get의 경우", function (done) {
         request(app)
-            .get("/main/status")
+            .get("/common/status")
             .query({ UserId: 1 })
             .set("Accept", "application/json")
             .expect((res) => {
@@ -19,7 +19,7 @@ describe("GET /main/status", function () {
                 expect(res.body).toStrictEqual({
                     status: 200,
                     success: true,
-                    message: successMeta["SUC-MAIN-0001"].message,
+                    message: successMeta["SUC-COMMON-0001"].message,
                     data: {
                         nickname: "테스트",
                         history: 65,
@@ -32,7 +32,7 @@ describe("GET /main/status", function () {
     });
     it("user id 존재하지만 ContainStock에 데이터가 존재하지 않는 경우", function (done) {
         request(app)
-            .get("/main/status")
+            .get("/common/status")
             .query({ UserId: 2 })
             .set("Accept", "application/json")
             .expect((res) => {
@@ -40,7 +40,7 @@ describe("GET /main/status", function () {
                 expect(res.body).toStrictEqual({
                     status: 200,
                     success: true,
-                    message: successMeta["SUC-MAIN-0001"].message,
+                    message: successMeta["SUC-COMMON-0001"].message,
                     data: {
                         nickname: "테스트2",
                         history: 65,
@@ -53,7 +53,7 @@ describe("GET /main/status", function () {
     });
     it("user id 존재하지만 Deposits에 데이터가 존재하지 않는 경우", function (done) {
         request(app)
-            .get("/main/status")
+            .get("/common/status")
             .query({ UserId: 3 })
             .set("Accept", "application/json")
             .expect((res) => {

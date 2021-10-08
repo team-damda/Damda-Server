@@ -7,13 +7,13 @@ const mainController = require("./socket-controllers/main-controller");
 const commonController = require("./socket-controllers/common-controller");
 const io = socketIo(server);
 
-io.of("/main/status")
+io.of("/common/status")
     .use((socket, next) => {
         console.log("안녕 여기는 auth용 미들웨어 부분");
         next();
     })
     .on("connection", (socket) => {
-        mainController.readMyStatusDeposit(socket);
+        commonController.readMyStatusDeposit(socket);
     });
 
 io.of("/main/interestStocks")
