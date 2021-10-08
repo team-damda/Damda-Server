@@ -8,5 +8,6 @@ router.get("/", function (req, res, next) {
 
 /* Add router */
 router.use("/main", require("./main"));
+router.use("/common", require("./common"));
 
 module.exports = router;

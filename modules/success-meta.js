@@ -8,6 +8,12 @@ module.exports = {
             "main/route success"
     */
     "SUC-MAIN-0001": {
-        message: "main/status success",
+        message: "main/status 조회 성공",
+    },
+    "SUC-MAIN-0002": {
+        message: "main/interestStocks 조회 성공",
+    },
+    "SUC-COMMON-0003": {
+        message: "common/holdingStocks 조회 성공",
     },
 };
