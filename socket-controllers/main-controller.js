@@ -68,6 +68,16 @@ module.exports = {
                         todayRoC: (2000 / (50000 - 2000)) * 100,
                         // Today Rate of Change: 등락률
                     },
+                    // {
+                    //     marketType: "KOSPI",
+                    //     stockId: "2DOSJFOJOFJOEJP",
+                    //     stockName: "삼성AB2",
+                    //     currentPrice: 30000,
+                    //     todayChange: 2000,
+                    //     // 시가대비
+                    //     todayRoC: (2000 / (30000 - 2000)) * 100,
+                    //     // Today Rate of Change: 등락률
+                    // },
                 ],
                 successMeta["SUC-MAIN-0002"].message
             );
@@ -78,7 +88,9 @@ module.exports = {
             });
             socket.on("disconnect", () => {
                 // 클라이언트의 연결이 끊어졌을 때 호출
-                console.log(`Socket disconnected /main/status: ${socket.id}`);
+                console.log(
+                    `Socket disconnected /main/interestStocks: ${socket.id}`
+                );
             });
         } catch (error) {
             let { statusCode, errorCode, message } = error;
