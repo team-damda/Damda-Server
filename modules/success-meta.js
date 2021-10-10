@@ -7,8 +7,8 @@ module.exports = {
         * message 형식
             "main/route success"
     */
-    "SUC-MAIN-0001": {
-        message: "main/status 조회 성공",
+    "SUC-COMMON-0001": {
+        message: "common/status 조회 성공",
     },
     "SUC-MAIN-0002": {
         message: "main/interestStocks 조회 성공",

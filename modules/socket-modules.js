@@ -1,23 +1,27 @@
+const CustomError = require("./custom-error");
+const errorMeta = require("./error-meta");
+const statusCodeMeta = require("./status-code-meta");
+
 module.exports = {
     sleep: (ms) => {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
         });
     },
-    sendByPeriodWithNoService: async ({ socket, period, data }) => {
+    sendByPeriodWithNoService: async ({ socket, period, data, endpoint }) => {
         /* 개발용 더미 데이터 보내기 위함*/
         if (socket && period && data) {
             setInterval(() => {
                 if (socket.connected) {
-                    console.log(socket.id, "from server main/interestSockets");
+                    console.log(socket.id, `from server ${endpoint}`);
                     socket.emit("reply_json", data);
                 }
             }, 10 * 1000);
         } else {
             throw CustomError(
-                statusCode.BAD_REQUEST,
+                statusCodeMeta.BAD_REQUEST,
                 "ERR-SOCK-0002",
-                error.message
+                errorMeta
             );
         }
     },
@@ -27,6 +31,7 @@ module.exports = {
         service,
         query,
         successDataFormat,
+        endpoint,
     }) => {
         /*
             [설명]
@@ -38,13 +43,22 @@ module.exports = {
             service: 해당하는 서비스 레이어 객체
             query: 서비스 레이어에 인자로 보낼 쿼리(타입: 객체)
             successDataFormat: 소켓으로 보낼 데이터 형식
+            endpoint: 로그 찍을 때 필요
         */
-        if (socket && service && successDataFormat && query && period) {
+
+        if (
+            socket &&
+            service &&
+            successDataFormat &&
+            query &&
+            period &&
+            endpoint
+        ) {
             let i = 0;
 
             setInterval(async () => {
                 if (socket.connected) {
-                    console.log(socket.id, "from server main/status");
+                    console.log(socket.id, `from server ${endpoint}`);
                     await service(query)
                         .then((data) => {
                             successDataFormat.data = data;
@@ -57,9 +71,9 @@ module.exports = {
             }, 10 * 1000);
         } else {
             throw CustomError(
-                statusCode.BAD_REQUEST,
+                statusCodeMeta.BAD_REQUEST,
                 "ERR-SOCK-0002",
-                error.message
+                errorMeta
             );
         }
     },
