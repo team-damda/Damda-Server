@@ -1,5 +1,5 @@
 const statusCodeMeta = require("../modules/status-code-meta");
-const MainServices = require("../services/main-services");
+const CommonServices = require("../services/common-services");
 const responseBody = require("../modules/response-body");
 const successMeta = require("../modules/success-meta");
 
@@ -22,13 +22,14 @@ module.exports = {
                 query: {
                     UserId: UserId,
                 },
-                service: MainServices.readMyStatus,
+                service: CommonServices.readMyStatus,
                 successDataFormat: responseBody.successData(
                     // nested까지 확인은 못함: 클라이언트에서
                     statusCodeMeta.OK,
                     successMeta["SUC-COMMON-0001"].message
                 ),
                 period: 10,
+                endpoint: "common/status",
             });
             socket.on("disconnect", () => {
                 // 클라이언트의 연결이 끊어졌을 때 호출
@@ -76,6 +77,7 @@ module.exports = {
                 socket,
                 period: 10,
                 data: successData,
+                endpoint: "common/containStocks",
             });
             socket.on("disconnect", () => {
                 // 클라이언트의 연결이 끊어졌을 때 호출

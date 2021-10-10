@@ -7,6 +7,7 @@ const commonServices = require("../services/common-services");
 module.exports = {
     readMyStatus: async (req, res) => {
         try {
+            console.log("REST [common/status]");
             if (!req.query.UserId) {
                 // TODO UserId -> 토큰으로 헤더에서 받고 이건 미들웨어로 처리해야 함.
                 res.status(statusCodeMeta.BAD_REQUEST).send({
@@ -20,7 +21,6 @@ module.exports = {
                     UserId: parseInt(UserId),
                 })
                 .then((data) => {
-                    console.log(data);
                     res.status(statusCodeMeta.OK).send(
                         responseBody.successData(
                             statusCodeMeta.OK,
@@ -46,7 +46,7 @@ module.exports = {
     },
     readHoldingStocks: async (req, res) => {
         try {
-            console.log("common/holdingStocks");
+            console.log("REST [common/containStocks]");
             if (!req.query.UserId) {
                 // TODO UserId -> 토큰으로 헤더에서 받고 이건 미들웨어로 처리해야 함.
                 res.status(statusCodeMeta.BAD_REQUEST).send({
