@@ -9,5 +9,6 @@ router.get("/", function (req, res, next) {
 /* Add router */
 router.use("/main", require("./main"));
 router.use("/common", require("./common"));
+router.use("/wallet", require("./wallet"));
 
 module.exports = router;
