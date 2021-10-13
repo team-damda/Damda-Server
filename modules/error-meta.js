@@ -23,9 +23,13 @@ module.exports = {
         message:
             "server - db connection instable while searching UserDeposits table",
     },
-    "ERR-MAIN-0004": {
+    "ERR-MAIN-0003-1": {
         message:
             "server - db connection instable while searching ContainStocks table",
+    },
+    "ERR-MAIN-0004-1": {
+        message:
+            "server - db connection instable while searching OneMinChart table",
     },
 
     "ERR-SOCK-0001": {
