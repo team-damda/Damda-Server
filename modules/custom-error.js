@@ -6,7 +6,7 @@ module.exports = (stat, errCode, errorMeta) => {
             message
         }
     */
-    var err = new Error(errorMeta[errCode].message);
+    var err = new Error(errorMeta[errCode].message || "");
     err.statusCode = stat;
     err.errorCode = errCode;
     // console.log(err.errorcode);
