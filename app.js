@@ -10,7 +10,7 @@ const indexRouter = require("./routes/index");
 const path = require("path");
 
 sequelize
-    .sync()
+    .sync({ alter: true })
     .then(() => {
         console.log("DB connection success");
     })
