@@ -40,7 +40,8 @@ module.exports = async ({ UserId }) => {
                 if (datas.length > 0) {
                     answer = datas.map((data) => data.dataValues);
                 } else {
-                    // 보유 종목 없는 경우
+                    // 관심 종목 없는 경우
+                    NO_INTERESTED = true;
                     return [];
                 }
             },
@@ -52,6 +53,9 @@ module.exports = async ({ UserId }) => {
                 );
             }
         );
+        if (NO_INTERESTED) {
+            return [];
+        }
         // marketType, stockName 구하기: StockInfo
         await StockInfo.findAll({
             attributes: ["stockId", "marketType", "stockName"],
