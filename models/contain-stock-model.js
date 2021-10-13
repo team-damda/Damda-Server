@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             stockId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false,
             },
             totCnt: {
