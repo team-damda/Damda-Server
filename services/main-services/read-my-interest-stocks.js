@@ -1,13 +1,27 @@
-const { UserDeposit, ContainStock, StockInfo, User } = require("../../models");
+const {
+    UserDeposit,
+    ContainStock,
+    InterestStock,
+    StockInfo,
+    OneMinChart,
+    User,
+} = require("../../models");
 const statusCodeMeta = require("../../modules/status-code-meta");
 const errorMeta = require("../../modules/error-meta");
 const CustomError = require("../../modules/custom-error");
+
+const {
+    getYesterdayNextMin,
+    getYesterdayThisMin,
+} = require("../../modules/service-modules");
+
+const { Op } = require("sequelize");
 
 module.exports = async ({ UserId }) => {
     /*
         data: [{
 				marketType: "A",
-				stockId: 1, 
+				stockId: "SJSJKDNKD", 
 				stockName: "삼성증권", 
 				currentPrice: 50000,
 				TodayChange: 2000,
@@ -17,28 +31,50 @@ module.exports = async ({ UserId }) => {
 		}, ...]
     */
     try {
-        const answer = {};
-        // nickname, history 구하기
-        await User.findOne({
-            where: { id: UserId },
-            attributes: ["nickname", "createdAt"],
+        let answer = [];
+        // stockId 구하기: InterestStock
+        await InterestStock.findAll({
+            where: { uid: UserId },
+            attributes: ["stockId"],
         }).then(
-            function (data) {
-                if (data) {
-                    const { nickname, createdAt } = data;
-                    const userCreatedTime = new Date(createdAt).getTime();
-                    const today = new Date().getTime();
-                    const history_ms = today - userCreatedTime;
-                    const history =
-                        Math.floor(history_ms / (1000 * 60 * 60 * 24)) + 1;
-
-                    answer.nickname = nickname;
-                    answer.history = history;
+            function (datas) {
+                if (datas.length > 0) {
+                    answer = datas.map((data) => data.dataValues);
+                    console.log(answer);
+                } else {
+                    // 관심 종목 없는 경우
+                    return [];
+                }
+            },
+            function (error) {
+                throw CustomError(
+                    statusCodeMeta.DB_ERROR,
+                    "ERR-MAIN-0001-2",
+                    error.message || ""
+                );
+            }
+        );
+        // marketType, stockName 구하기: StockInfo
+        await StockInfo.findAll({
+            attributes: ["stockId", "marketType", "stockName"],
+            where: {
+                stockId: {
+                    [Op.in]: answer.map((stock) => stock.stockId),
+                },
+            },
+        }).then(
+            function (datas) {
+                if (datas.length > 0) {
+                    answer = datas.map((data) => data.dataValues);
+                    console.log(
+                        "marketType, stockName 구하기: StockInfo",
+                        answer
+                    );
                 } else {
                     throw CustomError(
-                        statusCodeMeta.BAD_REQUEST,
-                        "ERR-MAIN-0001-1",
-                        errorMeta
+                        statusCodeMeta.DB_ERROR,
+                        "ERR-MAIN-0001-2",
+                        error.message || ""
                     );
                 }
             },
@@ -50,58 +86,61 @@ module.exports = async ({ UserId }) => {
                 );
             }
         );
-        // deposit 구하기
-        await UserDeposit.findOne({
-            where: { uid: UserId },
-            attributes: ["deposit"],
-        }).then(
-            function (data) {
-                if (data) {
-                    const { deposit } = data;
-                    answer.deposit = deposit;
-                } else {
-                    throw CustomError(
-                        statusCodeMeta.BAD_REQUEST,
-                        "ERR-MAIN-0002-1",
-                        errorMeta
-                    );
-                }
+
+        // currentPrice, TodayChange, TodayRoC 구하기
+        await OneMinChart.findAll({
+            attributes: ["stockId", "currentPrice", "startPrice"],
+            where: {
+                [Op.and]: [
+                    {
+                        stockId: {
+                            [Op.in]: answer.map((stock) => stock.stockId),
+                        },
+                    },
+                    {
+                        time: {
+                            [Op.and]: [
+                                {
+                                    [Op.gte]: getYesterdayThisMin(),
+                                },
+                                {
+                                    [Op.lt]: getYesterdayNextMin(),
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            function (error) {
-                throw CustomError(
-                    statusCodeMeta.DB_ERROR,
-                    "ERR-DB-0002-2",
-                    error.message || ""
-                );
-            }
-        );
-        // containStockAsset 구하기
-        // TODO 실시간으로 OneMinCharts와 조인 후 데이터 받아서 계산해야 함.
-        await ContainStock.findAll({
-            where: { uid: UserId },
-            attributes: ["stockId", "avgPrice", "totCnt"],
         }).then(
             function (datas) {
                 if (datas.length > 0) {
-                    const assetlist = datas.map((data) => data.dataValues);
-                    answer.containStockAsset = assetlist.reduce(
-                        (prev, { totCnt, avgPrice }) =>
-                            prev + totCnt * avgPrice,
-                        0
-                    );
+                    const temp = datas.map((data) => data.dataValues);
+                    answer = answer.map((a) => {
+                        const { currentPrice, startPrice } = temp.filter(
+                            (t) => t.stockId === a.stockId
+                        )[0];
+                        const todayChange = currentPrice - startPrice;
+                        const todayRoC =
+                            (100 * (currentPrice - startPrice)) / startPrice;
+                        return { ...a, todayChange, todayRoC, currentPrice };
+                    });
+                    console.log(answer);
                 } else {
-                    answer.containStockAsset = 0;
+                    throw CustomError(
+                        statusCodeMeta.DB_ERROR,
+                        "ERR-MAIN-0001-2",
+                        error.message || ""
+                    );
                 }
             },
             function (error) {
                 throw CustomError(
                     statusCodeMeta.DB_ERROR,
-                    "ERR-DB-0003-1",
+                    "ERR-MAIN-0004-1",
                     error.message || ""
                 );
             }
         );
-
         return answer;
     } catch (error) {
         console.error(error);

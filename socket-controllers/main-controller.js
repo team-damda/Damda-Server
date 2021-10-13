@@ -18,36 +18,19 @@ module.exports = {
                 `Socket connected in /main/interestStocks ${socket.id}`
             );
             const UserId = socket.handshake.query.token;
-            const successData = responseBody.successData(
-                statusCodeMeta.OK,
-                [
-                    {
-                        marketType: "KOSPI",
-                        stockId: "1SNDNDJJFHUSISN",
-                        stockName: "삼성증권",
-                        currentPrice: 50000,
-                        todayChange: 2000,
-                        // 시가대비
-                        todayRoC: (2000 / (50000 - 2000)) * 100,
-                        // Today Rate of Change: 등락률
-                    },
-                    // {
-                    //     marketType: "KOSPI",
-                    //     stockId: "2DOSJFOJOFJOEJP",
-                    //     stockName: "삼성AB2",
-                    //     currentPrice: 30000,
-                    //     todayChange: 2000,
-                    //     // 시가대비
-                    //     todayRoC: (2000 / (30000 - 2000)) * 100,
-                    //     // Today Rate of Change: 등락률
-                    // },
-                ],
-                successMeta["SUC-MAIN-0002"].message
-            );
-            sendByPeriodWithNoService({
+
+            sendByPeriod({
                 socket,
+                query: {
+                    UserId: UserId,
+                },
+                service: MainServices.readMyInterestStocks,
+                successDataFormat: responseBody.successData(
+                    // nested까지 확인은 못함: 클라이언트에서
+                    statusCodeMeta.OK,
+                    successMeta["SUC-MAIN-0002"].message
+                ),
                 period: 10,
-                data: successData,
                 endpoint: "main/interestStocks",
             });
             socket.on("disconnect", () => {

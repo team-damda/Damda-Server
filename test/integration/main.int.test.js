@@ -69,32 +69,38 @@ describe("GET /common/status", function () {
     //     });
 });
 
-// describe("GET /main/interestStocks", function () {
-//     it("user id Users에 존재하는 정상적인 get의 경우", function (done) {
-//         request(app)
-//             .get("/main/interestStocks")
-//             .query({ UserId: 1 })
-//             .set("Accept", "application/json")
-//             .expect((res) => {
-//                 // console.log(res.body);
-//                 expect(res.body).toStrictEqual({
-//                     status: 200,
-//                     success: true,
-//                     message: successMeta["SUC-MAIN-0002"].message,
-//                     data: [
-//                         {
-//                             marketType: "A",
-//                             stockId: 1,
-//                             stockName: "삼성증권",
-//                             currentPrice: 50000,
-//                             todayChange: 2000,
-//                             // 시가대비
-//                             todayRoC: (2000 / (50000 - 2000)) * 100,
-//                             // Today Rate of Change: 등락률
-//                         },
-//                     ],
-//                 });
-//             })
-//             .expect(200, done);
-//     });
-// });
+describe("GET /main/interestStocks", function () {
+    it("user id Users에 존재하는 정상적인 get의 경우", function (done) {
+        request(app)
+            .get("/main/interestStocks")
+            .query({ UserId: 1 })
+            .set("Accept", "application/json")
+            .expect((res) => {
+                // console.log(res.body);
+                expect(res.body).toStrictEqual({
+                    status: 200,
+                    success: true,
+                    message: successMeta["SUC-MAIN-0002"].message,
+                    data: [
+                        {
+                            stockId: "AA",
+                            marketType: "코스피",
+                            stockName: "밤새는거극혐",
+                            todayChange: -1000,
+                            todayRoC: -16.666666666666668,
+                            currentPrice: 5000,
+                        },
+                        {
+                            stockId: "BB",
+                            marketType: "코스닥",
+                            stockName: "라이언",
+                            todayChange: 1000,
+                            todayRoC: 25,
+                            currentPrice: 5000,
+                        },
+                    ],
+                });
+            })
+            .expect(200, done);
+    });
+});

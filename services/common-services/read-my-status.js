@@ -146,7 +146,7 @@ module.exports = async ({ UserId }) => {
                 throw CustomError(
                     statusCodeMeta.DB_ERROR,
                     "ERR-MAIN-0004-1",
-                    msg
+                    error.message || ""
                 );
             }
         );
