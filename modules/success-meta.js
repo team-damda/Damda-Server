@@ -16,4 +16,7 @@ module.exports = {
     "SUC-COMMON-0003": {
         message: "common/holdingStocks 조회 성공",
     },
+    "SUC-WALLET-0001": {
+        message: "wallet/transactions 조회 성공",
+    },
 };
