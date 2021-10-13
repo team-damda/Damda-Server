@@ -99,6 +99,7 @@ module.exports = async ({ UserId }) => {
         );
         // containStockAsset 구하기 (2)
         // OneMinCharts와 조인 후 데이터 받아서 계산하기
+        console.log(getYesterdayNextMin(), getYesterdayThisMin());
         await OneMinChart.findAll({
             attributes: ["stockId", "currentPrice"],
             where: {
