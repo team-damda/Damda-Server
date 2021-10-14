@@ -100,27 +100,49 @@ module.exports = async ({ UserId, stockId, curCnt, curPrice }) => {
                 );
             }
         );
-        console.log(oldAvgPrice, oldTotCnt);
-        await ContainStock.update(
-            {
-                avgPrice:
-                    (oldAvgPrice * oldTotCnt + curPrice * curCnt) /
-                    (curCnt + oldTotCnt),
-                totCnt: oldTotCnt + curCnt,
-            },
-            { where: { [Op.and]: [{ uid: UserId }, { stockId: stockId }] } }
-        ).then(
-            function (data) {
-                console.log(data);
-            },
-            function (error) {
-                throw CustomError(
-                    statusCodeMeta.DB_ERROR,
-                    "ERR-MAIN-0001-2",
-                    errorMeta
-                );
-            }
-        );
+        if (oldTotCnt == 0 && oldAvgPrice == 0) {
+            // 기존에 해당 종목으로 주식을 산 적이 없는 경우
+            console.log("기존에 해당 종목으로 주식을 산 적이 없는 경우");
+            await ContainStock.create({
+                uid: UserId,
+                stockId,
+                totCnt: curCnt,
+                avgPrice: curPrice,
+            }).then(
+                function (data) {
+                    console.log(data);
+                },
+                function (error) {
+                    throw CustomError(
+                        statusCodeMeta.DB_ERROR,
+                        "ERR-MAIN-0001-2",
+                        errorMeta
+                    );
+                }
+            );
+        } else {
+            console.log(oldAvgPrice, oldTotCnt);
+            await ContainStock.update(
+                {
+                    avgPrice:
+                        (oldAvgPrice * oldTotCnt + curPrice * curCnt) /
+                        (curCnt + oldTotCnt),
+                    totCnt: oldTotCnt + curCnt,
+                },
+                { where: { [Op.and]: [{ uid: UserId }, { stockId: stockId }] } }
+            ).then(
+                function (data) {
+                    console.log(data);
+                },
+                function (error) {
+                    throw CustomError(
+                        statusCodeMeta.DB_ERROR,
+                        "ERR-MAIN-0001-2",
+                        errorMeta
+                    );
+                }
+            );
+        }
     } catch (error) {
         console.error(error);
         throw error;
