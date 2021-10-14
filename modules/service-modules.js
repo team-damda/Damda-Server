@@ -7,7 +7,7 @@ const getYesterdayThisMin = () => {
     let d = new Date();
     d.setDate(d.getDate() - 1);
     d.setSeconds(0);
-    d.setHours(d.getHours() - 4);
+    d.setHours(d.getHours() - 10);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d;
 };
@@ -16,7 +16,7 @@ const getYesterdayNextMin = () => {
     d.setDate(d.getDate() - 1);
     d.setMinutes(d.getMinutes() + 1);
     d.setSeconds(0);
-    d.setHours(d.getHours() - 4);
+    d.setHours(d.getHours() - 10);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d;
 };
