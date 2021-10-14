@@ -31,6 +31,7 @@ module.exports = async ({ UserId }) => {
     */
     try {
         let answer = [];
+        let NO_INTERESTED = false;
         // stockId 구하기: ContainStock
         await ContainStock.findAll({
             where: { uid: UserId },
