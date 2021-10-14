@@ -88,6 +88,7 @@ module.exports = async ({ UserId }) => {
         );
 
         // currentPrice, TodayChange, TodayRoC 구하기
+        console.log(getYesterdayThisMin(), getYesterdayNextMin());
         await OneMinChart.findAll({
             attributes: ["stockId", "currentPrice", "startPrice"],
             where: {
