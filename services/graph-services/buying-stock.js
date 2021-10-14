@@ -82,9 +82,15 @@ module.exports = async ({ UserId, stockId, curCnt, curPrice }) => {
             },
         }).then(
             function (data) {
-                const { avgPrice, totCnt } = data.dataValues;
-                oldAvgPrice = avgPrice;
-                oldTotCnt = totCnt;
+                if (data) {
+                    const { avgPrice, totCnt } = data.dataValues;
+                    oldAvgPrice = avgPrice;
+                    oldTotCnt = totCnt;
+                } else {
+                    // 기존에 안 가지고 있던 주식의 경우
+                    oldAvgPrice = 0;
+                    oldTotCnt = 0;
+                }
             },
             function (error) {
                 throw CustomError(
@@ -98,8 +104,8 @@ module.exports = async ({ UserId, stockId, curCnt, curPrice }) => {
         await ContainStock.update(
             {
                 avgPrice:
-                    oldAvgPrice * oldTotCnt +
-                    (curPrice * curCnt) / (curCnt + oldTotCnt),
+                    (oldAvgPrice * oldTotCnt + curPrice * curCnt) /
+                    (curCnt + oldTotCnt),
                 totCnt: oldTotCnt + curCnt,
             },
             { where: { [Op.and]: [{ uid: UserId }, { stockId: stockId }] } }
