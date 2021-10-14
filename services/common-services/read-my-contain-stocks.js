@@ -31,7 +31,7 @@ module.exports = async ({ UserId }) => {
     */
     try {
         let answer = [];
-        let NO_INTERESTED = false;
+        let NO_CONTAIN = false;
         // stockId 구하기: ContainStock
         await ContainStock.findAll({
             where: { uid: UserId },
@@ -42,7 +42,7 @@ module.exports = async ({ UserId }) => {
                     answer = datas.map((data) => data.dataValues);
                 } else {
                     // 관심 종목 없는 경우
-                    NO_INTERESTED = true;
+                    NO_CONTAIN = true;
                     return [];
                 }
             },
@@ -54,7 +54,7 @@ module.exports = async ({ UserId }) => {
                 );
             }
         );
-        if (NO_INTERESTED) {
+        if (NO_CONTAIN) {
             return [];
         }
         // marketType, stockName 구하기: StockInfo
