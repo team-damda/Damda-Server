@@ -19,4 +19,7 @@ module.exports = {
     "SUC-WALLET-0001": {
         message: "wallet/transactions 조회 성공",
     },
+    "SUC-GRAPH-0001": {
+        message: "graph/buying POST 성공",
+    },
 };
