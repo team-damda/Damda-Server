@@ -56,27 +56,33 @@ module.exports = {
                 `Socket connected in /common/containStocks ${socket.id}`
             );
             const UserId = socket.handshake.query.token;
-            const successData = responseBody.successData(
-                statusCodeMeta.OK,
-                [
-                    {
-                        marketType: "KOSDAC",
-                        stockId: "2DOSJFOJOFJOEJP",
-                        stockName: "주식ABCD",
-                        currentPrice: 40000,
-                        totCnt: 3,
-                        totProfitLoss: (40000 - 30000) * 3,
-                        // 평가손익:(현재가-평단가)*보유량,
-                        totProfitLossRate: (100 * (40000 - 30000)) / 30000,
-                        // 수익률: 100*(현재가-평단가)/평단가
-                    },
-                ],
-                successMeta["SUC-MAIN-0002"].message
-            );
-            sendByPeriodWithNoService({
+
+            // [
+            //     {
+            //         marketType: "KOSDAC",
+            //         stockId: "2DOSJFOJOFJOEJP",
+            //         stockName: "주식ABCD",
+            //         currentPrice: 40000,
+            //         totCnt: 3,
+            //         totProfitLoss: (40000 - 30000) * 3,
+            //         // 평가손익:(현재가-평단가)*보유량,
+            //         totProfitLossRate: (100 * (40000 - 30000)) / 30000,
+            //         // 수익률: 100*(현재가-평단가)/평단가
+            //     },
+            // ],
+
+            sendByPeriod({
                 socket,
+                query: {
+                    UserId: UserId,
+                },
+                service: CommonServices.readMyContainStocks,
+                successDataFormat: responseBody.successData(
+                    // nested까지 확인은 못함: 클라이언트에서
+                    statusCodeMeta.OK,
+                    successMeta["SUC-COMMON-0003"].message
+                ),
                 period: 10,
-                data: successData,
                 endpoint: "common/containStocks",
             });
             socket.on("disconnect", () => {

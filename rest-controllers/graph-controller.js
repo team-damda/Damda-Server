@@ -1,33 +1,35 @@
 const statusCodeMeta = require("../modules/status-code-meta");
-const MainServices = require("../services/main-services");
 const responseMessage = require("../modules/response-message");
 const responseBody = require("../modules/response-body");
 const successMeta = require("../modules/success-meta");
-const mainServices = require("../services/main-services");
+const graphServices = require("../services/graph-services");
 
 module.exports = {
-    readInterestStocks: async (req, res) => {
+    buyingStock: async (req, res) => {
         try {
-            console.log("[REST] main/interestStocks");
-            if (!req.query.UserId) {
+            console.log("REST [graph/buying]");
+            // console.log(req);
+            if (!req.body.UserId) {
                 // TODO UserId -> 토큰으로 헤더에서 받고 이건 미들웨어로 처리해야 함.
                 res.status(statusCodeMeta.BAD_REQUEST).send({
                     message: responseMessage.MAIN_STATUS_READ_FAIL,
                 });
                 return;
             }
-
-            const { UserId } = req.query;
-            await mainServices
-                .readMyInterestStocks({
+            // console.log(req);
+            const { UserId, stockId, curCnt, curPrice } = req.body;
+            await graphServices
+                .buyingStock({
                     UserId: parseInt(UserId),
+                    stockId,
+                    curCnt: parseInt(curCnt),
+                    curPrice: parseInt(curPrice),
                 })
-                .then((data) => {
+                .then(() => {
                     res.status(statusCodeMeta.OK).send(
-                        responseBody.successData(
+                        responseBody.success(
                             statusCodeMeta.OK,
-                            data,
-                            successMeta["SUC-MAIN-0002"].message
+                            successMeta["SUC-GRAPH-0001"].message
                         )
                     );
                 })

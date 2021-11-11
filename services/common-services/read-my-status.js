@@ -1,7 +1,19 @@
-const { UserDeposit, ContainStock, StockInfo, User } = require("../../models");
+const {
+    UserDeposit,
+    ContainStock,
+    StockInfo,
+    User,
+    OneMinChart,
+} = require("../../models");
 const statusCodeMeta = require("../../modules/status-code-meta");
 const errorMeta = require("../../modules/error-meta");
 const CustomError = require("../../modules/custom-error");
+const {
+    getYesterdayNextMin,
+    getYesterdayThisMin,
+} = require("../../modules/service-modules");
+
+const { Op } = require("sequelize");
 
 module.exports = async ({ UserId }) => {
     try {
@@ -58,23 +70,72 @@ module.exports = async ({ UserId }) => {
             function (error) {
                 throw CustomError(
                     statusCodeMeta.DB_ERROR,
-                    "ERR-DB-0002-2",
+                    "ERR-MAIN-0002-2",
                     error.message || ""
                 );
             }
         );
-        // containStockAsset 구하기
-        // TODO 실시간으로 OneMinCharts와 조인 후 데이터 받아서 계산해야 함.
+        // containStockAsset 구하기 (1)
+        // ContainStock의 stockId, totCnt로 보유 종목들 종목코드와 수량 구하기
+        var containStockList = [];
         await ContainStock.findAll({
             where: { uid: UserId },
-            attributes: ["stockId", "avgPrice", "totCnt"],
+            attributes: ["stockId", "totCnt"],
         }).then(
             function (datas) {
                 if (datas.length > 0) {
-                    const assetlist = datas.map((data) => data.dataValues);
-                    answer.containStockAsset = assetlist.reduce(
-                        (prev, { totCnt, avgPrice }) =>
-                            prev + totCnt * avgPrice,
+                    containStockList = datas.map((data) => data.dataValues);
+                } else {
+                    answer.containStockAsset = 0;
+                }
+            },
+            function (error) {
+                throw CustomError(
+                    statusCodeMeta.DB_ERROR,
+                    "ERR-MAIN-0003-1",
+                    error.message || ""
+                );
+            }
+        );
+        // containStockAsset 구하기 (2)
+        // OneMinCharts와 조인 후 데이터 받아서 계산하기
+        // console.log(getYesterdayNextMin(), getYesterdayThisMin());
+        await OneMinChart.findAll({
+            attributes: ["stockId", "currentPrice"],
+            where: {
+                [Op.and]: [
+                    {
+                        stockId: {
+                            [Op.in]: containStockList.map(
+                                (stock) => stock.stockId
+                            ),
+                        },
+                    },
+                    {
+                        time: {
+                            [Op.and]: [
+                                {
+                                    [Op.gte]: getYesterdayThisMin(),
+                                },
+                                {
+                                    [Op.lt]: getYesterdayNextMin(),
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        }).then(
+            function (datas) {
+                if (datas.length > 0) {
+                    const temp = datas.map((data) => data.dataValues);
+                    answer.containStockAsset = temp.reduce(
+                        (prev, { stockId, currentPrice }) => {
+                            const { totCnt } = containStockList.filter(
+                                (s) => s.stockId === stockId
+                            )[0];
+                            return prev + totCnt * currentPrice;
+                        },
                         0
                     );
                 } else {
@@ -84,7 +145,7 @@ module.exports = async ({ UserId }) => {
             function (error) {
                 throw CustomError(
                     statusCodeMeta.DB_ERROR,
-                    "ERR-DB-0003-1",
+                    "ERR-MAIN-0004-1",
                     error.message || ""
                 );
             }
