@@ -26,7 +26,7 @@ module.exports = {
                         responseBody.successData(
                             statusCodeMeta.OK,
                             data,
-                            successMeta["SUC-WALLET-0002"].message
+                            successMeta["SUC-WALLET-0001"].message
                         )
                     );
                 })

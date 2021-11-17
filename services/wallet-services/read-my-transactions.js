@@ -1,12 +1,4 @@
-const {
-    UserDeposit,
-    ContainStock,
-    StockInfo,
-    User,
-    OneMinChart,
-    BuyStock,
-    SellStock,
-} = require("../../models");
+const { StockInfo, OneMinChart, BuyStock, SellStock } = require("../../models");
 const statusCodeMeta = require("../../modules/status-code-meta");
 const errorMeta = require("../../modules/error-meta");
 const CustomError = require("../../modules/custom-error");
@@ -21,6 +13,7 @@ const {
 const { Op } = require("sequelize");
 
 module.exports = async ({ UserId }) => {
+    // TODO error 던지는 것 각 상황에 맞게 처리하기
     try {
         const answer = [];
         const days = {};
@@ -65,6 +58,7 @@ module.exports = async ({ UserId }) => {
                             if (days[thatDate]) {
                                 // 이미 존재하는 경우
                                 days[thatDate].ids.push({
+                                    // TODO 타임 로컬 값으로 가져와야 함...ㅠㅠ
                                     transTime: getTheTime(d),
                                     isBuy: true,
                                     id: idx,
@@ -303,7 +297,6 @@ module.exports = async ({ UserId }) => {
                     parseInt(s.transTime.split(":")[1]);
                 return change2DecInt(a) - change2DecInt(b);
             });
-            console.log(days[day].ids);
             // (2) 뷰타입 1인 day 형식 먼저 넣어주기
             answer.push({
                 viewType: 1,
@@ -324,7 +317,7 @@ module.exports = async ({ UserId }) => {
             });
         });
         console.log(answer);
-        return [];
+        return answer;
     } catch (error) {
         console.error(error);
         throw error;
