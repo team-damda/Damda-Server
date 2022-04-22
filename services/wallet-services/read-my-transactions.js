@@ -14,6 +14,7 @@ const { Op } = require("sequelize");
 
 module.exports = async ({ UserId }) => {
     // TODO error 던지는 것 각 상황에 맞게 처리하기
+    // TODO valuationLossRate 추가하기
     try {
         const answer = [];
         const days = {};
