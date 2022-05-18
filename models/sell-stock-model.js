@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            // TODO 수익률 넣어야 함
+            valuationLossRate: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
         },
         {
             timestamps: true,

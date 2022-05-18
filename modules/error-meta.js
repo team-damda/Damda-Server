@@ -31,6 +31,13 @@ module.exports = {
         message:
             "server - db connection instable while searching OneMinChart table",
     },
+    "ERR-WALLET-0001-1": {
+        message: "no user id matching in Users table",
+    },
+    "ERR-WALLET-0001-2": {
+        message:
+            "server - db connection instable or found no data while searching Table",
+    },
 
     "ERR-SOCK-0001": {
         message: "wrong query",
