@@ -53,7 +53,7 @@ module.exports = async ({UserId}) => {
         );
 
         // deposit 구하기
-        // repository 적용
+        // * repository 적용
         await UserDepositRepository.getByUserId({
             UserId,
         }).then(

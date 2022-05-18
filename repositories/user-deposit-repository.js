@@ -1,4 +1,4 @@
-// repository 적용
+// * repository 적용
 const {UserDeposit} = require("../models");
 const CustomError = require("../modules/custom-error");
 const errorMeta = require("../modules/error-meta");

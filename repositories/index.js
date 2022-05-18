@@ -1,4 +1,4 @@
-// repository 적용
+// * repository 적용
 const repository = {};
 repository.UserDepositRepository = require("./user-deposit-repository");
 
