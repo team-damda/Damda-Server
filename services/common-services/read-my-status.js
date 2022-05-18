@@ -13,19 +13,20 @@ const {
     getYesterdayThisMin,
 } = require("../../modules/service-modules");
 
-const { Op } = require("sequelize");
+const {Op} = require("sequelize");
+const {UserDepositRepository} = require("../../repositories");
 
-module.exports = async ({ UserId }) => {
+module.exports = async ({UserId}) => {
     try {
         const answer = {};
         // nickname, history 구하기
         await User.findOne({
-            where: { id: UserId },
+            where: {id: UserId},
             attributes: ["nickname", "createdAt"],
         }).then(
             function (data) {
                 if (data) {
-                    const { nickname, createdAt } = data;
+                    const {nickname, createdAt} = data;
                     const userCreatedTime = new Date(createdAt).getTime();
                     const today = new Date().getTime();
                     const history_ms = today - userCreatedTime;
@@ -50,36 +51,26 @@ module.exports = async ({ UserId }) => {
                 );
             }
         );
+
         // deposit 구하기
-        await UserDeposit.findOne({
-            where: { uid: UserId },
-            attributes: ["deposit"],
+        // repository 적용
+        await UserDepositRepository.getByUserId({
+            UserId,
         }).then(
-            function (data) {
-                if (data) {
-                    const { deposit } = data;
-                    answer.deposit = deposit;
-                } else {
-                    throw CustomError(
-                        statusCodeMeta.BAD_REQUEST,
-                        "ERR-MAIN-0002-1",
-                        errorMeta
-                    );
-                }
+            (data) => {
+                const {deposit} = data;
+                answer.deposit = deposit;
             },
-            function (error) {
-                throw CustomError(
-                    statusCodeMeta.DB_ERROR,
-                    "ERR-MAIN-0002-2",
-                    error.message || ""
-                );
+            (error) => {
+                throw error;
             }
         );
+
         // containStockAsset 구하기 (1)
         // ContainStock의 stockId, totCnt로 보유 종목들 종목코드와 수량 구하기
         var containStockList = [];
         await ContainStock.findAll({
-            where: { uid: UserId },
+            where: {uid: UserId},
             attributes: ["stockId", "totCnt"],
         }).then(
             function (datas) {
@@ -130,8 +121,8 @@ module.exports = async ({ UserId }) => {
                 if (datas.length > 0) {
                     const temp = datas.map((data) => data.dataValues);
                     answer.containStockAsset = temp.reduce(
-                        (prev, { stockId, currentPrice }) => {
-                            const { totCnt } = containStockList.filter(
+                        (prev, {stockId, currentPrice}) => {
+                            const {totCnt} = containStockList.filter(
                                 (s) => s.stockId === stockId
                             )[0];
                             return prev + totCnt * currentPrice;
